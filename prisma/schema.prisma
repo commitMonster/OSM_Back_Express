@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource mysql {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+model Image {
+  id               Int                @id @default(autoincrement())
+  url              String             @mysql.VarChar(500)
+  noticeEventImage NoticeEventImage[] @ignore
+  productImage     ProductImage[]     @ignore
+
+  @@map("image")
+}
+
+model NoticeEvent {
+  id               Int                @id @default(autoincrement())
+  title            String             @mysql.VarChar(255)
+  description      String?            @mysql.Text
+  type             Int
+  activation       Boolean            @default(true)
+  noticeEventImage NoticeEventImage[] @ignore
+
+  @@map("notice_event")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model NoticeEventImage {
+  noticeEventId Int         @map("notice_event_id")
+  imageId       Int         @map("image_id")
+  order         Int
+  image         Image       @relation(fields: [imageId], references: [id])
+  noticeEvent   NoticeEvent @relation(fields: [noticeEventId], references: [id])
+
+  @@index([imageId], name: "notice_event_image_image_fk")
+  @@index([noticeEventId], name: "notice_event_image_notice_event_fk")
+  @@map("notice_event_image")
+  @@ignore
+}
+
+model Product {
+  id           Int            @id @default(autoincrement())
+  name         String         @mysql.VarChar(255)
+  description  String?        @mysql.Text
+  count        Int
+  price        Int
+  productImage ProductImage[] @ignore
+
+  @@map("product")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model ProductImage {
+  productId Int     @map("product_id")
+  imageId   Int     @map("image_id")
+  order     Int
+  image     Image   @relation(fields: [imageId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([imageId], name: "product_image_image_fk")
+  @@index([productId], name: "product_image_product_fk")
+  @@map("product_image")
+  @@ignore
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  userId   String  @unique @map("user_id") @mysql.VarChar(100)
+  password String  @mysql.VarChar(30)
+  name     String  @mysql.VarChar(30)
+  email    String  @unique @mysql.VarChar(100)
+  is_admin Boolean
+  address  String? @mysql.VarChar(300)
+
+  @@map("user")
+}
