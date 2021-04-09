@@ -69,10 +69,10 @@ model ProductImage {
 model User {
   id       Int     @id @default(autoincrement())
   userId   String  @unique @map("user_id") @mysql.VarChar(100)
-  password String  @mysql.VarChar(30)
+  password String  @mysql.VarChar(100)
   name     String  @mysql.VarChar(30)
   email    String  @unique @mysql.VarChar(100)
-  is_admin Boolean
+  is_admin Boolean @default(false)
   address  String? @mysql.VarChar(300)
 
   @@map("user")
