@@ -1,15 +1,12 @@
 import express from 'express';
-import { AuthHelper } from '../middlewares/AuthHelper';
-import { AuthService } from '../services/AuthService';
-import { JoinValidaton } from '../validations/JoinValidation';
+import * as AuthHelper from '../middlewares/AuthHelper';
+import * as AuthService from '../services/AuthService';
+import * as JoinValidaton from '../validations/JoinValidation';
 
 const router = express.Router();
-const authHelper = new AuthHelper();
-const authService = new AuthService();
-const joinValidation = new JoinValidaton();
-
-router.post('/login', authHelper.isNotLoggedIn, authHelper.login);
-router.post('/logout', authHelper.isLoggedIn, authHelper.logout);
-router.post('/join', joinValidation.JoinRequest, authHelper.isNotLoggedIn, authService.join);
+router.post('/login', AuthHelper.isNotLoggedIn, AuthHelper.login);
+router.post('/logout', AuthHelper.isLoggedIn, AuthHelper.logout);
+router.post('/join', JoinValidaton.joinRequest, AuthHelper.isNotLoggedIn, AuthService.join);
+router.post('/check', JoinValidaton.idRequest, AuthHelper.isNotLoggedIn, AuthService.isIdDuplicated);
 
 export default router;

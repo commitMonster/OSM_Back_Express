@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt';
 import passportLocal from 'passport-local';
-import { UserRepository } from '../../repositorys/UserRepository';
+import * as UserRepository from '../../repositorys/UserRepository';
 
 const LocalStrategy = passportLocal.Strategy;
-const userRepository = new UserRepository();
 
 export default passport => {
   passport.use(
@@ -15,7 +14,7 @@ export default passport => {
       },
       async (userId, password, cb) => {
         try {
-          const findUser = await userRepository.findByUserId(userId);
+          const findUser = await UserRepository.findByUserId(userId);
           if (!findUser) {
             return cb(null, false);
           }
