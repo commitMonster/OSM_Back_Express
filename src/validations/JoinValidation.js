@@ -14,6 +14,7 @@ export const joinRequest = async (req, res, next) => {
       .run(req);
     await check('email').isEmail().run(req);
     await check('name').isString();
+    await check('address').isString();
 
     const error = validationResult(req);
     if (!error.isEmpty()) {

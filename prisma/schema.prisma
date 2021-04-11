@@ -22,6 +22,8 @@ model NoticeEvent {
   description      String?            @mysql.Text
   type             Int
   activation       Boolean            @default(true)
+  startDate        DateTime           @map("start_date")
+  endDate          DateTime           @map("end_date")
   noticeEventImage NoticeEventImage[] @ignore
 
   @@map("notice_event")
