@@ -54,7 +54,7 @@ export const findById = async (req, res, next) => {
 
 export const updateById = async (req, res, next) => {
   try {
-    const banner = await BannerRepository.updateById(Number(req.params.id), req.body);
+    const banner = formatBanner(await BannerRepository.updateById(Number(req.params.id), req.body));
     res.send(banner);
   } catch (err) {
     console.error(err);
@@ -64,7 +64,7 @@ export const updateById = async (req, res, next) => {
 
 export const updateActivationById = async (req, res, next) => {
   try {
-    const banner = await BannerRepository.updateActivationById(Number(req.params.id), req.body.activation);
+    const banner = formatBanner(await BannerRepository.updateActivationById(Number(req.params.id), req.body.activation));
     res.send(banner);
   } catch (err) {
     console.error(err);
