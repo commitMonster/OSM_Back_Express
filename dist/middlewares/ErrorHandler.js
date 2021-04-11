@@ -19,7 +19,7 @@ var logHandler = function logHandler(err, req, res, next) {
 
 exports.logHandler = logHandler;
 
-var errorHandler = function errorHandler(err, req, res) {
+var errorHandler = function errorHandler(err, req, res, next) {
   if (err.code === 'P2002') {
     res.status(409);
     res.type('json').send((0, _stringify["default"])({

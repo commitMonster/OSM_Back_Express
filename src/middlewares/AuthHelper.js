@@ -14,7 +14,11 @@ export const login = (req, res, next) => {
         console.error(loginError);
         return res.status(500).send({ Error: '로그인에 실패했습니다.' });
       }
-      res.send();
+      if (user.isAdmin) {
+        res.send({ isAdmin: true });
+      } else {
+        res.send({ isAdmin: false });
+      }
     });
   })(req, res, next);
 };
@@ -27,7 +31,7 @@ export const logout = (req, res, next) => {
       next(err);
     } else {
       res.clearCookie('connect.sid');
-      res.redirect('/');
+      res.send({ message: '로그아웃 성공' });
     }
   });
 };

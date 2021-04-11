@@ -7,8 +7,10 @@ import morgan from 'morgan';
 import passport from 'passport';
 import env from './configs';
 import passportConfig from './configs/passport';
+import AdminBannerController from './controllers/Admin/BannerController';
 import AuthController from './controllers/AuthController';
-import { errorHandler, logHandler } from './middlewares/ErrorHandler.js';
+import ImageController from './controllers/ImageController';
+import { errorHandler, logHandler } from './middlewares/ErrorHandler';
 
 const app = express();
 passportConfig(passport);
@@ -24,7 +26,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Add router
+app.use('/images', ImageController);
+
+// User
 app.use('/auth', AuthController);
+
+// Admin
+app.use('/admin/banner', AdminBannerController);
 
 app.use(logHandler);
 app.use(errorHandler);

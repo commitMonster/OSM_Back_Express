@@ -18,9 +18,9 @@ export const findByUserId = async userId => {
 };
 
 export const create = async data => {
-  const { password, userId, name, email } = data;
+  const { password, userId, name, email, address } = data;
   try {
-    return prisma.user.create({ data: { password, userId, name, email } });
+    return prisma.user.create({ data: { password, userId, name, email, address } });
   } catch (err) {
     console.error(err);
   }
