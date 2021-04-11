@@ -28,8 +28,9 @@ export const findAll = async (req, res, next) => {
         const start = new Date(req.query.start + ' 00:00:00');
         const end = new Date(req.query.end + ' 23:59:59');
         banners = await BannerRepository.findAllBetween(start, end, sort);
+      } else {
+        res.status(400).send({ message: '종료 일자는 필수 항목입니다.' });
       }
-      res.status(400).send({ message: '종료 일자는 필수 항목입니다.' });
     } else {
       banners = await BannerRepository.findAllOrderBy(sort);
     }
