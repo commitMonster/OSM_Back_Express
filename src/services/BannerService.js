@@ -11,7 +11,7 @@ const formatBanner = banner => {
 
 export const create = async (req, res, next) => {
   try {
-    const banner = await BannerRepository.create(req.body);
+    const banner = formatBanner(await BannerRepository.create(req.body));
     res.send(banner);
   } catch (err) {
     console.error(err);
