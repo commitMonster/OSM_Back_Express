@@ -7,17 +7,17 @@ export const login = (req, res, next) => {
       return next(err);
     }
     if (!user) {
-      return res.status(401).send({ Error: '해당 유저 정보가 없습니다.' });
+      return res.status(401).send({ message: '해당 유저 정보가 없습니다.' });
     }
     return req.login(user, loginError => {
       if (loginError) {
         console.error(loginError);
-        return res.status(500).send({ Error: '로그인에 실패했습니다.' });
+        return res.status(500).send({ message: '로그인에 실패했습니다.' });
       }
       if (user.isAdmin) {
-        res.send({ isAdmin: true });
+        res.send({ isAdmin: true, name: user.name });
       } else {
-        res.send({ isAdmin: false });
+        res.send({ isAdmin: false, name: user.name });
       }
     });
   })(req, res, next);
@@ -40,7 +40,7 @@ export const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.status(403).send('잘못된 접근입니다.');
+    res.status(403).send({ message: '잘못된 접근입니다.' });
   }
 };
 
@@ -48,7 +48,7 @@ export const isNotLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     next();
   } else {
-    res.status(403).send('잘못된 접근입니다.');
+    res.status(403).send({ message: '잘못된 접근입니다.' });
   }
 };
 
@@ -56,7 +56,7 @@ export const isAdmin = (req, res, next) => {
   if (req.user.isAdmin) {
     next();
   } else {
-    res.status(403).send('잘못된 접근입니다.');
+    res.status(403).send({ message: '잘못된 접근입니다.' });
   }
 };
 
@@ -64,6 +64,6 @@ export const isNotAdmin = (req, res, next) => {
   if (!req.user.isAdmin) {
     next();
   } else {
-    res.status(403).send('잘못된 접근입니다.');
+    res.status(403).send({ message: '잘못된 접근입니다.' });
   }
 };

@@ -1,9 +1,5 @@
 import { check, validationResult } from 'express-validator';
 
-/**
- *
- * @todo 비밀번호의 제약 조건에 대해서 고객에게 다시 여쭤봐야 함.
- */
 export const joinRequest = async (req, res, next) => {
   try {
     await check('userId').isString().run(req);
