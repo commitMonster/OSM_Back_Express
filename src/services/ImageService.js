@@ -14,4 +14,4 @@ export const uploader = multer({ storage });
 export const upload = async (req, res, next) => {
   const filePaths = req.files.map(file => file.path);
   res.send(filePaths);
-};images/161813082941921taehee.png
+};

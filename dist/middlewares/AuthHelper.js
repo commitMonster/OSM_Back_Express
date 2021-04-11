@@ -33,7 +33,15 @@ var login = function login(req, res, next) {
         });
       }
 
-      res.send();
+      if (user.isAdmin) {
+        res.send({
+          isAdmin: true
+        });
+      } else {
+        res.send({
+          isAdmin: false
+        });
+      }
     });
   })(req, res, next);
 };
@@ -48,7 +56,9 @@ var logout = function logout(req, res, next) {
       next(err);
     } else {
       res.clearCookie('connect.sid');
-      res.redirect('/');
+      res.send({
+        message: '로그아웃 성공'
+      });
     }
   });
 };

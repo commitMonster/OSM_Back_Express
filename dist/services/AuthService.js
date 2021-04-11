@@ -38,22 +38,37 @@ var join = /*#__PURE__*/function () {
 
           case 6:
             user = _context.sent;
-            res.send(user);
-            _context.next = 14;
+
+            if (!user) {
+              _context.next = 11;
+              break;
+            }
+
+            res.send({
+              message: '회원 가입 성공'
+            });
+            _context.next = 12;
             break;
 
-          case 10:
-            _context.prev = 10;
+          case 11:
+            throw new Error('알 수 없는 에러 발생');
+
+          case 12:
+            _context.next = 18;
+            break;
+
+          case 14:
+            _context.prev = 14;
             _context.t0 = _context["catch"](0);
             console.error(_context.t0);
             next(_context.t0);
 
-          case 14:
+          case 18:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 10]]);
+    }, _callee, null, [[0, 14]]);
   }));
 
   return function join(_x, _x2, _x3) {
@@ -76,11 +91,17 @@ var isIdDuplicated = /*#__PURE__*/function () {
 
           case 3:
             user = _context2.sent;
-            if (user) res.send({
-              isIdDuplicated: true
-            });else res.send({
-              isIdDuplicated: false
-            });
+
+            if (user) {
+              res.send({
+                isIdDuplicated: true
+              });
+            } else {
+              res.send({
+                isIdDuplicated: false
+              });
+            }
+
             _context2.next = 11;
             break;
 

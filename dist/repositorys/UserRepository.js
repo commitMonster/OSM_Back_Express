@@ -87,19 +87,20 @@ exports.findByUserId = findByUserId;
 
 var create = /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(data) {
-    var password, userId, name, email;
+    var password, userId, name, email, address;
     return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            password = data.password, userId = data.userId, name = data.name, email = data.email;
+            password = data.password, userId = data.userId, name = data.name, email = data.email, address = data.address;
             _context3.prev = 1;
             return _context3.abrupt("return", prisma.user.create({
               data: {
                 password: password,
                 userId: userId,
                 name: name,
-                email: email
+                email: email,
+                address: address
               }
             }));
 

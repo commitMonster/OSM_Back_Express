@@ -28,9 +28,13 @@ var _configs = _interopRequireDefault(require("./configs"));
 
 var _passport2 = _interopRequireDefault(require("./configs/passport"));
 
+var _BannerController = _interopRequireDefault(require("./controllers/Admin/BannerController"));
+
 var _AuthController = _interopRequireDefault(require("./controllers/AuthController"));
 
-var _ErrorHandler = require("./middlewares/ErrorHandler.js");
+var _ImageController = _interopRequireDefault(require("./controllers/ImageController"));
+
+var _ErrorHandler = require("./middlewares/ErrorHandler");
 
 var app = (0, _express["default"])();
 (0, _passport2["default"])(_passport["default"]); // App middleware
@@ -50,7 +54,11 @@ app.use((0, _expressSession["default"])({
 app.use(_passport["default"].initialize());
 app.use(_passport["default"].session()); // Add router
 
-app.use('/auth', _AuthController["default"]);
+app.use('/images', _ImageController["default"]); // User
+
+app.use('/auth', _AuthController["default"]); // Admin
+
+app.use('/admin/banner', _BannerController["default"]);
 app.use(_ErrorHandler.logHandler);
 app.use(_ErrorHandler.errorHandler);
 var _default = app;

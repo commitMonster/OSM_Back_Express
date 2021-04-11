@@ -47,6 +47,10 @@ var joinRequest = /*#__PURE__*/function () {
             return (0, _expressValidator.check)('name').isString();
 
           case 9:
+            _context.next = 11;
+            return (0, _expressValidator.check)('address').isString();
+
+          case 11:
             error = (0, _expressValidator.validationResult)(req);
 
             if (!error.isEmpty()) {
@@ -54,21 +58,21 @@ var joinRequest = /*#__PURE__*/function () {
             }
 
             next();
-            _context.next = 18;
+            _context.next = 20;
             break;
 
-          case 14:
-            _context.prev = 14;
+          case 16:
+            _context.prev = 16;
             _context.t0 = _context["catch"](0);
             res.status(400);
             res.send(_context.t0.mapped());
 
-          case 18:
+          case 20:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 14]]);
+    }, _callee, null, [[0, 16]]);
   }));
 
   return function joinRequest(_x, _x2, _x3) {
