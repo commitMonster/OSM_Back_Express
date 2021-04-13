@@ -1,7 +1,15 @@
 import bcrypt from 'bcrypt';
 import * as UserRepository from '../repositorys/UserRepository';
 
-export const join = async (req, res, next) => {
+const isUserExist = user => {
+  if (user) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const signup = async (req, res, next) => {
   try {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     const user = await UserRepository.create(req.body);
@@ -16,13 +24,16 @@ export const join = async (req, res, next) => {
   }
 };
 
-export const isIdDuplicated = async (req, res, next) => {
+export const isDuplicated = async (req, res, next) => {
   try {
-    const user = await UserRepository.findByUserId(req.body.userId);
-    if (user) {
-      res.send({ isIdDuplicated: true });
+    if (req.params.type === 'userId') {
+      const user = await UserRepository.findByUserId(req.body.userId);
+      return res.send({ isDuplicated: isUserExist(user) });
+    } else if (req.params.type === 'email') {
+      const user = await UserRepository.findByEmail(req.body.email);
+      return res.send({ isDuplicated: isUserExist(user) });
     } else {
-      res.send({ isIdDuplicated: false });
+      res.send({ isDuplicated: false });
     }
   } catch (err) {
     console.error(err);
