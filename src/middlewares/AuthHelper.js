@@ -1,6 +1,6 @@
 import passport from 'passport';
 
-export const login = (req, res, next) => {
+export const signin = (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     if (err) {
       console.error(err);
@@ -23,7 +23,7 @@ export const login = (req, res, next) => {
   })(req, res, next);
 };
 
-export const logout = (req, res, next) => {
+export const signout = (req, res, next) => {
   req.logout();
   req.session.destroy(err => {
     if (err) {
