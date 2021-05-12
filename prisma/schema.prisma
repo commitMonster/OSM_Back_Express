@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["selectRelationCount"]
 }
 
 datasource mysql {
@@ -12,22 +13,38 @@ model NoticeEvent {
   title       String   @mysql.VarChar(255)
   description String?  @mysql.Text
   type        Int
-  image       String
   activation  Boolean  @default(true)
   startDate   DateTime @map("start_date")
   endDate     DateTime @map("end_date")
+  image       String
 
   @@map("notice_event")
 }
 
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  Product Product[] @relation("categoryToproduct")
+  @@map("category")
+}
+
 model Product {
-  id          Int     @id @default(autoincrement())
-  name        String  @mysql.VarChar(255)
-  description String? @mysql.Text
+  id          Int      @id @default(autoincrement())
+  categoryId  Int      @map("category_id")
+  name        String   @mysql.VarChar(255)
+  description String?  @mysql.Text
   count       Int
   price       Int
+  delivery    Int
   image       String
+  isDeleted   Boolean  @map("is_deleted")
+  score       Int      @default(0)
+  review      Review[] @relation("productToreview")
+  category    Category @relation("categoryToproduct", fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at")
 
+  @@index([categoryId], name: "product_category_fk")
   @@map("product")
 }
 
@@ -41,4 +58,16 @@ model User {
   address  String? @mysql.VarChar(300)
 
   @@map("user")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Review {
+  id          Int     @id @default(autoincrement())
+  productId   Int     @map("product_id")
+  score       Int
+  description String? @mysql.MediumText
+  product     Product @relation("productToreview", fields: [productId], references: [id])
+
+  @@index([productId], name: "review_product_fk")
+  @@map("review")
 }
