@@ -2,9 +2,8 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const create = async data => {
-  const { title, description, type, image, startDate, endDate } = data;
   try {
-    return prisma.noticeEvent.create({ data: { title, description, type, image, startDate, endDate } });
+    return prisma.noticeEvent.create({ data });
   } catch (err) {
     console.error(err);
   }
@@ -25,8 +24,34 @@ export const findAllBetween = async (start, end, sort) => {
     return prisma.noticeEvent.findMany({
       orderBy: [{ endDate: sort }],
       where: {
-        startDate: { gte: start },
-        endDate: { lte: end },
+        startDate: { lte: end },
+        endDate: { gte: start },
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const findAllByStartDate = async (start, sort) => {
+  try {
+    return prisma.noticeEvent.findMany({
+      orderBy: [{ endDate: sort }],
+      where: {
+        startDate: { lte: start },
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const findAllByEndDate = async (end, sort) => {
+  try {
+    return prisma.noticeEvent.findMany({
+      orderBy: [{ endDate: sort }],
+      where: {
+        endDate: { gte: end },
       },
     });
   } catch (err) {
@@ -43,11 +68,10 @@ export const findById = async id => {
 };
 
 export const updateById = async (id, data) => {
-  const { title, description, type, image, startDate, endDate } = data;
   try {
     return prisma.noticeEvent.update({
       where: { id },
-      data: { title, description, type, image, startDate, endDate },
+      data,
     });
   } catch (err) {
     console.error(err);

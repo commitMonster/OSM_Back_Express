@@ -23,18 +23,22 @@ export const findAll = async (req, res, next) => {
   const sort = req.query.orderBy || 'asc';
   try {
     let banners;
-    if (req.query.start) {
-      if (req.query.end) {
-        const start = new Date(req.query.start + ' 00:00:00');
-        const end = new Date(req.query.end + ' 23:59:59');
-        banners = await BannerRepository.findAllBetween(start, end, sort);
-      } else {
-        res.status(400).send({ message: '종료 일자는 필수 항목입니다.' });
-      }
+    if (req.query.start && req.query.end) {
+      // 선택한 날짜에 진행 중인 이벤트
+      const start = new Date(req.query.start + ' 00:00:00');
+      const end = new Date(req.query.end + ' 23:59:59');
+      banners = await BannerRepository.findAllBetween(start, end, sort);
+    } else if (req.query.sort === 'now') {
+      // 현재 진행 중인 이벤트
+      const end = new Date(new Date().toLocaleDateString() + ' 23:59:59');
+      banners = await BannerRepository.findAllByEndDate(end, sort);
+    } else if (req.query.sort === 'end') {
+      // 종료된 이벤트
+      const start = new Date(new Date().toLocaleDateString() + ' 00:00:00');
+      banners = await BannerRepository.findAllByStartDate(start, sort);
     } else {
-      banners = await BannerRepository.findAllOrderBy(sort);
+      res.status(400).send({ message: '요청 인자가 올바르지 않습니다.' });
     }
-    console.log(banners);
     banners.map(banner => formatBanner(banner));
     res.send(banners);
   } catch (err) {

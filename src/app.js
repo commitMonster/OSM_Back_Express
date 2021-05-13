@@ -10,6 +10,7 @@ import passportConfig from './configs/passport';
 import AuthController from './controllers/AuthController';
 import BannerController from './controllers/BannerController';
 import ImageController from './controllers/ImageController';
+import ProductController from './controllers/ProductController';
 import { errorHandler, logHandler } from './middlewares/ErrorHandler';
 
 const app = express();
@@ -29,6 +30,7 @@ app.use(passport.session());
 app.use('/images', ImageController);
 app.use('/auth', AuthController);
 app.use('/banner', BannerController);
+app.use('/product', ProductController);
 
 app.use(logHandler);
 app.use(errorHandler);
