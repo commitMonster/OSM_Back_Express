@@ -30,8 +30,10 @@ export const findById = async id => {
   });
 };
 
-export const findAllByWhereOptionOrderByOrderOption = async (whereOption, orderOption) => {
+export const findAllByWhereOptionOrderByOrderOption = async (pagination, whereOption, orderOption) => {
   return await prisma.product.findMany({
+    skip: pagination.skip,
+    take: pagination.take,
     where: {
       AND: whereOption,
     },
@@ -41,5 +43,21 @@ export const findAllByWhereOptionOrderByOrderOption = async (whereOption, orderO
       },
     },
     orderBy: [orderOption],
+  });
+};
+
+export const countByWhereOptionOrderByOrderOption = async (whereOption, orderOption) => {
+  return await prisma.product.count({
+    where: {
+      AND: whereOption,
+    },
+    orderBy: [orderOption],
+  });
+};
+
+export const findOrderByCreatedAtLimitFive = async () => {
+  return await prisma.product.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 5,
   });
 };

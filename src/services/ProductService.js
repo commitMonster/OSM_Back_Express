@@ -1,4 +1,5 @@
 import * as ProductRepository from '../repositorys/ProductRepository';
+import * as ReviewRepository from '../repositorys/ReviewRepository';
 
 export const create = async (req, res, next) => {
   try {
@@ -62,7 +63,7 @@ export const findById = async (req, res, next) => {
  * category=& (했음)
  * isDeleted=& (했음)
  * 필터 - 가격(했음)
- * 카테고리 전체
+ * 카테고리 전체(했음)
  * + pagination
  */
 export const findAll = async (req, res, next) => {
@@ -75,6 +76,10 @@ export const findAll = async (req, res, next) => {
     const isPriceRange = req.query.isPriceRange === 'true' ? true : false;
     const categoryId = req.query.categoryId ? Number(req.query.categoryId) : null;
     const isDeleted = req.query.isDeleted === 'true' ? true : false;
+    const pageSize = Number(req.query.pageSize);
+    const page = Number(req.query.page);
+
+    const pagination = { skip: pageSize * (page - 1), take: pageSize };
 
     const orderOption = {};
     orderOption[orderBy] = sort;
@@ -96,9 +101,37 @@ export const findAll = async (req, res, next) => {
       whereOption.push({ price: { gte: DEFAULT_MIN_PRICE } }, { price: { lte: DEFAULT_MAX_PRICT } });
     }
 
-    const productList = await ProductRepository.findAllByWhereOptionOrderByOrderOption(whereOption, orderOption);
+    const productList = await ProductRepository.findAllByWhereOptionOrderByOrderOption(pagination, whereOption, orderOption);
+    const itemCount = await ProductRepository.countByWhereOptionOrderByOrderOption(whereOption, orderOption);
 
-    res.send(productList);
+    productList.map(product => {
+      product.image = product.image.split(',');
+    });
+
+    res.send({ productList, itemCount });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const findNew = async (req, res, next) => {
+  try {
+    const newProductList = await ProductRepository.findOrderByCreatedAtLimitFive();
+    newProductList.map(product => {
+      product.image = product.image.split(',');
+    });
+    res.send(newProductList);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const findReview = async (req, res, next) => {
+  try {
+    const reviewList = await ReviewRepository.findByProductId(Number(req.params.id));
+    res.send(reviewList);
   } catch (err) {
     console.error(err);
     next(err);
