@@ -12,7 +12,7 @@ const formatBanner = banner => {
 export const create = async (req, res, next) => {
   try {
     const banner = formatBanner(await BannerRepository.create(req.body));
-    res.send(banner);
+    return res.send(banner);
   } catch (err) {
     console.error(err);
     next(err);
@@ -40,7 +40,7 @@ export const findAll = async (req, res, next) => {
       res.status(400).send({ message: '요청 인자가 올바르지 않습니다.' });
     }
     banners.map(banner => formatBanner(banner));
-    res.send(banners);
+    return res.send(banners);
   } catch (err) {
     console.error(err);
     next(err);
@@ -50,7 +50,7 @@ export const findAll = async (req, res, next) => {
 export const findById = async (req, res, next) => {
   try {
     const banner = formatBanner(await BannerRepository.findById(Number(req.params.id)));
-    res.send(banner);
+    return res.send(banner);
   } catch (err) {
     console.error(err);
     next(err);
@@ -60,7 +60,7 @@ export const findById = async (req, res, next) => {
 export const updateById = async (req, res, next) => {
   try {
     const banner = formatBanner(await BannerRepository.updateById(Number(req.params.id), req.body));
-    res.send(banner);
+    return res.send(banner);
   } catch (err) {
     console.error(err);
     next(err);
@@ -70,7 +70,7 @@ export const updateById = async (req, res, next) => {
 export const updateActivationById = async (req, res, next) => {
   try {
     const banner = formatBanner(await BannerRepository.updateActivationById(Number(req.params.id), req.body.activation));
-    res.send(banner);
+    return res.send(banner);
   } catch (err) {
     console.error(err);
     next(err);
@@ -80,7 +80,7 @@ export const updateActivationById = async (req, res, next) => {
 export const deleteById = async (req, res, next) => {
   try {
     await BannerRepository.deleteById(Number(req.params.id));
-    res.send({ message: '삭제 성공' });
+    return res.send({ message: '삭제 성공' });
   } catch (err) {
     console.error(err);
     next(err);

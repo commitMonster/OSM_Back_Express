@@ -14,7 +14,7 @@ export const uploader = multer({ storage });
 
 export const upload = async (req, res, next) => {
   const filePaths = req.files.map(file => file.path);
-  res.send(filePaths);
+  return res.send(filePaths);
 };
 
 export const deletePhoto = async (req, res, next) => {
@@ -22,7 +22,7 @@ export const deletePhoto = async (req, res, next) => {
     if (err) {
       res.status(400).send({ message: '이미지가 없거나 삭제에 실패했습니다.' });
     } else {
-      res.send({ message: 'success' });
+      return res.send({ message: 'success' });
     }
   });
 };

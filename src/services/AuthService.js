@@ -14,7 +14,7 @@ export const signup = async (req, res, next) => {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     const user = await UserRepository.create(req.body);
     if (user) {
-      res.send({ message: '회원 가입 성공' });
+      return res.send({ message: '회원 가입 성공' });
     } else {
       throw new Error('알 수 없는 에러 발생');
     }
@@ -33,7 +33,7 @@ export const isDuplicated = async (req, res, next) => {
       const user = await UserRepository.findByEmail(req.body.email);
       return res.send({ isDuplicated: isUserExist(user) });
     } else {
-      res.send({ isDuplicated: false });
+      return res.send({ isDuplicated: false });
     }
   } catch (err) {
     console.error(err);

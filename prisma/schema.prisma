@@ -40,24 +40,40 @@ model Product {
   image       String
   isDeleted   Boolean  @map("is_deleted")
   score       Int      @default(0)
-  review      Review[] @relation("productToreview")
   category    Category @relation("categoryToproduct", fields: [categoryId], references: [id])
   createdAt   DateTime @default(now()) @map("created_at")
+  review      Review[] @relation("productToreview")
+  Basket      Basket[] @relation("basketToproduct")
+
 
   @@index([categoryId], name: "product_category_fk")
   @@map("product")
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  userId   String  @unique @map("user_id") @mysql.VarChar(100)
-  password String  @mysql.VarChar(100)
-  name     String  @mysql.VarChar(30)
-  email    String  @unique @mysql.VarChar(100)
-  isAdmin  Boolean @default(false) @map("is_admin")
-  address  String? @mysql.VarChar(300)
+  id       Int      @id @default(autoincrement())
+  userId   String   @unique @map("user_id") @mysql.VarChar(100)
+  password String   @mysql.VarChar(100)
+  name     String   @mysql.VarChar(30)
+  email    String   @unique @mysql.VarChar(100)
+  isAdmin  Boolean  @default(false) @map("is_admin")
+  address  String?  @mysql.VarChar(300)
+  Basket   Basket[] @relation("basketTouser")
 
   @@map("user")
+}
+
+model Basket {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @map("user_id")
+  productId Int     @map("product_id")
+  count     Int
+  user      User    @relation("basketTouser", fields: [userId], references: [id])
+  product   Product @relation("basketToproduct", fields: [productId], references: [id])
+
+  @@index([userId], name: "basket_user_fk")
+  @@index([productId], name: "basket_product_fk")
+  @@map("basket")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.

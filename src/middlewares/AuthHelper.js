@@ -15,9 +15,9 @@ export const signin = (req, res, next) => {
         return res.status(500).send({ message: '로그인에 실패했습니다.' });
       }
       if (user.isAdmin) {
-        res.send({ isAdmin: true, name: user.name });
+        return res.send({ isAdmin: true, name: user.name });
       } else {
-        res.send({ isAdmin: false, name: user.name });
+        return res.send({ isAdmin: false, name: user.name });
       }
     });
   })(req, res, next);
@@ -31,7 +31,7 @@ export const signout = (req, res, next) => {
       next(err);
     } else {
       res.clearCookie('connect.sid');
-      res.send({ message: '로그아웃 성공' });
+      return res.send({ message: '로그아웃 성공' });
     }
   });
 };

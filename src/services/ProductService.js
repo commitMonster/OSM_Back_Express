@@ -7,7 +7,7 @@ export const create = async (req, res, next) => {
     data.isDeleted = false;
     const product = await ProductRepository.create(data);
     product.image = product.image.split(',');
-    res.send(product);
+    return res.send(product);
   } catch (err) {
     console.error(err);
     next(err);
@@ -20,7 +20,7 @@ export const updateById = async (req, res, next) => {
     data.isDeleted = false;
     const product = await ProductRepository.updateById(Number(req.params.id), data);
     product.image = product.image.split(',');
-    res.send(product);
+    return res.send(product);
   } catch (err) {
     console.error(err);
     next(err);
@@ -31,7 +31,7 @@ export const deleteById = async (req, res, next) => {
   try {
     const product = await ProductRepository.deleteById(Number(req.params.id));
     product.image = product.image.split(',');
-    res.send(product);
+    return res.send(product);
   } catch (err) {
     console.error(err);
     next(err);
@@ -42,7 +42,7 @@ export const findById = async (req, res, next) => {
   try {
     const product = await ProductRepository.findById(Number(req.params.id));
     product.image = product.image.split(',');
-    res.send(product);
+    return res.send(product);
   } catch (err) {
     console.error(err);
     next(err);
@@ -108,7 +108,7 @@ export const findAll = async (req, res, next) => {
       product.image = product.image.split(',');
     });
 
-    res.send({ productList, itemCount });
+    return res.send({ productList, itemCount });
   } catch (err) {
     console.error(err);
     next(err);
@@ -121,7 +121,7 @@ export const findNew = async (req, res, next) => {
     newProductList.map(product => {
       product.image = product.image.split(',');
     });
-    res.send(newProductList);
+    return res.send(newProductList);
   } catch (err) {
     console.error(err);
     next(err);
@@ -131,7 +131,7 @@ export const findNew = async (req, res, next) => {
 export const findReview = async (req, res, next) => {
   try {
     const reviewList = await ReviewRepository.findByProductId(Number(req.params.id));
-    res.send(reviewList);
+    return res.send(reviewList);
   } catch (err) {
     console.error(err);
     next(err);
