@@ -19,7 +19,7 @@ export const joinRequest = async (req, res, next) => {
     next();
   } catch (err) {
     res.status(400);
-    res.send(err.mapped());
+    return res.send(err.mapped());
   }
 };
 
@@ -34,6 +34,6 @@ export const idRequest = async (req, res, next) => {
     next();
   } catch (err) {
     res.status(400);
-    res.send(err.mapped());
+    return res.send(err.mapped());
   }
 };

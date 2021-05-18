@@ -21,6 +21,6 @@ export const bannerRequest = async (req, res, next) => {
     next();
   } catch (err) {
     res.status(400);
-    res.send(err.mapped());
+    return res.send(err.mapped());
   }
 };

@@ -9,6 +9,7 @@ import env from './configs';
 import passportConfig from './configs/passport';
 import AuthController from './controllers/AuthController';
 import BannerController from './controllers/BannerController';
+import BasketController from './controllers/BasketController';
 import ImageController from './controllers/ImageController';
 import ProductController from './controllers/ProductController';
 import { errorHandler, logHandler } from './middlewares/ErrorHandler';
@@ -31,6 +32,7 @@ app.use('/images', ImageController);
 app.use('/auth', AuthController);
 app.use('/banner', BannerController);
 app.use('/product', ProductController);
+app.use('/basket', BasketController);
 
 app.use(logHandler);
 app.use(errorHandler);
