@@ -60,6 +60,7 @@ model User {
   address  String?  @mysql.VarChar(300)
   Basket   Basket[] @relation("basketTouser")
 
+  Destination Destination[] @relation("destinationTouser")
   @@map("user")
 }
 
@@ -74,6 +75,19 @@ model Basket {
   @@index([userId], name: "basket_user_fk")
   @@index([productId], name: "basket_product_fk")
   @@map("basket")
+}
+
+model Destination {
+  id            Int     @id @default(autoincrement())
+  userId        Int     @map("user_id")
+  mainAddress   String  @map("main_address")
+  detailAddress String  @map("detail_address")
+  zoneNumber    String  @map("zone_number")
+  isDefault     Boolean @map("is_default")
+  user          User    @relation("destinationTouser", fields: [userId], references: [id])
+
+  @@index([userId], name: "destination_user_fk")
+  @@map("destination")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
