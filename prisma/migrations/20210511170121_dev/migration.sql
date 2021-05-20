@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `product` MODIFY `score` INTEGER NOT NULL DEFAULT 0;
