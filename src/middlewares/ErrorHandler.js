@@ -8,6 +8,6 @@ export const errorHandler = (err, req, res, next) => {
     res.type('json').send(JSON.stringify({ error: err || 'Uncaught Error !' }, null, 4));
   } else {
     res.status(err.status || 500);
-    res.type('json').send(JSON.stringify({ error: err || 'Uncaught Error !' }, null, 4));
+    res.type('json').send(JSON.stringify({ err }, null, 4));
   }
 };

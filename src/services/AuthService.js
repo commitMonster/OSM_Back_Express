@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import _ from 'lodash';
 import * as UserRepository from '../repositorys/UserRepository';
 
 const isUserExist = user => {
@@ -11,10 +12,11 @@ const isUserExist = user => {
 
 export const signup = async (req, res, next) => {
   try {
-    req.body.password = await bcrypt.hash(req.body.password, 10);
-    const user = await UserRepository.create(req.body);
+    const data = _.cloneDeep(req.body);
+    data.password = await bcrypt.hash(data.password, 10);
+    const user = await UserRepository.create(data);
     if (user) {
-      return res.send({ message: '회원 가입 성공' });
+      next();
     } else {
       throw new Error('알 수 없는 에러 발생');
     }
