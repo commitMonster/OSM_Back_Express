@@ -55,7 +55,6 @@ model User {
   userId   String   @unique @map("user_id") @mysql.VarChar(100)
   password String   @mysql.VarChar(100)
   name     String   @mysql.VarChar(30)
-  email    String   @unique @mysql.VarChar(100)
   isAdmin  Boolean  @default(false) @map("is_admin")
   Basket   Basket[] @relation("basketTouser")
 
