@@ -37,7 +37,8 @@ export const findAll = async (req, res, next) => {
       const start = new Date(new Date().toLocaleDateString() + ' 00:00:00');
       banners = await BannerRepository.findAllByStartDate(start, sort);
     } else {
-      res.status(400).send({ message: '요청 인자가 올바르지 않습니다.' });
+      // 전체 배너
+      banners = await BannerRepository.findAllOrderBy(sort);
     }
     banners.map(banner => formatBanner(banner));
     return res.send(banners);
