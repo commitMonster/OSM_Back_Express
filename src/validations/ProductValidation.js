@@ -7,8 +7,8 @@ export const productRequest = async (req, res, next) => {
     await check('count').isNumeric().run(req);
     await check('price').isNumeric().run(req);
     await check('image').isString().run(req);
-    await check('delivery').isString().run(req);
-    await check('categoryId').isString().run(req);
+    await check('delivery').isNumeric().run(req);
+    await check('categoryId').isNumeric().run(req);
 
     req.body.count = Number(req.body.count);
     req.body.price = Number(req.body.price);

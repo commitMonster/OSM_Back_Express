@@ -28,8 +28,7 @@ export const request = async (req, res, next) => {
       headers,
       data,
     });
-
-    res.redirect(kakaoRequest.data.next_redirect_pc_url + `?tid=${kakaoRequest.data.tid}`);
+    res.redirect(kakaoRequest.data.next_redirect_pc_url);
   } catch (err) {
     console.error(err);
     next(err);

@@ -78,15 +78,17 @@ model Basket {
 }
 
 model Destination {
-  id            Int     @id @default(autoincrement())
-  userId        Int     @map("user_id")
-  mainAddress   String  @map("main_address")
-  detailAddress String  @map("detail_address")
-  zoneNumber    String  @map("zone_number")
-  isDefault     Boolean @map("is_default")
-  user          User    @relation("destinationTouser", fields: [userId], references: [id])
+  id              Int     @id @default(autoincrement())
+  userId          Int     @map("user_id")
+  destinationName String
+  receiver        String
+  mainAddress     String  @map("main_address")
+  detailAddress   String  @map("detail_address")
+  zoneNumber      String  @map("zone_number")
+  isDefault       Boolean @map("is_default")
+  user            User    @relation("destinationTouser", fields: [userId], references: [id])
 
-  Purchase Purchase[] @relation("purchaseTodestination")
+  Order Order[] @relation("purchaseTodestination")
   @@index([userId], name: "destination_user_fk")
   @@map("destination")
 }
@@ -103,7 +105,7 @@ model Review {
   @@map("review")
 }
 
-model Purchase {
+model Order {
   id            Int    @id @default(autoincrement())
   total         Int
   delivery      Int
@@ -112,5 +114,5 @@ model Purchase {
 
   destination Destination @relation("purchaseTodestination", fields: [destinationId], references: [id])
   @@index([destinationId], name: "purchase_destination_fk")
-  @@map("purchase")
+  @@map("order")
 }
