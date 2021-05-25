@@ -12,7 +12,9 @@ import BannerController from './controllers/BannerController';
 import BasketController from './controllers/BasketController';
 import DestinationController from './controllers/DestinationController';
 import ImageController from './controllers/ImageController';
+import PayController from './controllers/PayController';
 import ProductController from './controllers/ProductController';
+import UserController from './controllers/UserController';
 import { errorHandler, logHandler } from './middlewares/ErrorHandler';
 
 const app = express();
@@ -22,7 +24,7 @@ passportConfig(passport);
 app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
-app.use(morgan('dev'));
+app.use(morgan('common'));
 app.use(cookieParser(env.COOKIE_SECRET));
 app.use(session({ secret: env.COOKIE_SECRET, resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
@@ -35,6 +37,8 @@ app.use('/banner', BannerController);
 app.use('/product', ProductController);
 app.use('/basket', BasketController);
 app.use('/destination', DestinationController);
+app.use('/user', UserController);
+app.use('/pay', PayController);
 
 app.use(logHandler);
 app.use(errorHandler);

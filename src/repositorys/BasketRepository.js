@@ -48,3 +48,11 @@ export const deleteMany = async userId => {
     console.error(err);
   }
 };
+
+export const count = async userId => {
+  try {
+    return prisma.basket.count({ where: { AND: { userId } } });
+  } catch (err) {
+    console.error(err);
+  }
+};

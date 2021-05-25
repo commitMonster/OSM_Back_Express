@@ -55,6 +55,7 @@ model User {
   userId   String   @unique @map("user_id") @mysql.VarChar(100)
   password String   @mysql.VarChar(100)
   name     String   @mysql.VarChar(30)
+  email    String   @unique
   isAdmin  Boolean  @default(false) @map("is_admin")
   Basket   Basket[] @relation("basketTouser")
 
@@ -67,6 +68,7 @@ model Basket {
   userId    Int     @map("user_id")
   productId Int     @map("product_id")
   count     Int
+  isDeleted Boolean @default(false)
   user      User    @relation("basketTouser", fields: [userId], references: [id])
   product   Product @relation("basketToproduct", fields: [productId], references: [id])
 
@@ -84,6 +86,7 @@ model Destination {
   isDefault     Boolean @map("is_default")
   user          User    @relation("destinationTouser", fields: [userId], references: [id])
 
+  Purchase Purchase[] @relation("purchaseTodestination")
   @@index([userId], name: "destination_user_fk")
   @@map("destination")
 }
@@ -98,4 +101,16 @@ model Review {
 
   @@index([productId], name: "review_product_fk")
   @@map("review")
+}
+
+model Purchase {
+  id            Int    @id @default(autoincrement())
+  total         Int
+  delivery      Int
+  destinationId Int    @map("destination_id")
+  list          String
+
+  destination Destination @relation("purchaseTodestination", fields: [destinationId], references: [id])
+  @@index([destinationId], name: "purchase_destination_fk")
+  @@map("purchase")
 }
