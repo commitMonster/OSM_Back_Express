@@ -7,6 +7,5 @@ node_modules
 images/
 
 .DS_Store
-dist
 
 prisma/migrations
