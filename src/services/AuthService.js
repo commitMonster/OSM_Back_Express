@@ -1,6 +1,17 @@
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
+import * as BasketRepository from '../repositorys/BasketRepository';
 import * as UserRepository from '../repositorys/UserRepository';
+
+export const find = async (req, res, next) => {
+  try {
+    const count = await BasketRepository.count(req.user.id);
+    res.send({ user: req.user, count });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
 
 const isUserExist = user => {
   if (user) {

@@ -14,7 +14,6 @@ import DestinationController from './controllers/DestinationController';
 import ImageController from './controllers/ImageController';
 import PayController from './controllers/PayController';
 import ProductController from './controllers/ProductController';
-import UserController from './controllers/UserController';
 import { errorHandler, logHandler } from './middlewares/ErrorHandler';
 
 const app = express();
@@ -37,7 +36,6 @@ app.use('/banner', BannerController);
 app.use('/product', ProductController);
 app.use('/basket', BasketController);
 app.use('/destination', DestinationController);
-app.use('/user', UserController);
 app.use('/pay', PayController);
 
 app.use(logHandler);
