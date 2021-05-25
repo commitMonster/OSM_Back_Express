@@ -12,6 +12,13 @@ export const updateById = async (id, data) => {
   });
 };
 
+export const updateCountById = async (id, count) => {
+  return prisma.product.update({
+    where: { id },
+    data: { count },
+  });
+};
+
 export const deleteById = async id => {
   return await prisma.product.update({
     where: { id },

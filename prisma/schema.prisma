@@ -60,6 +60,7 @@ model User {
   Basket   Basket[] @relation("basketTouser")
 
   Destination Destination[] @relation("destinationTouser")
+  Order       Order[]       @relation("orderTouser")
   @@map("user")
 }
 
@@ -106,13 +107,19 @@ model Review {
 }
 
 model Order {
-  id            Int    @id @default(autoincrement())
+  id            String    @id
+  userId        Int
   total         Int
   delivery      Int
-  destinationId Int    @map("destination_id")
+  destinationId Int       @map("destination_id")
   list          String
+  state         String
+  creaetdAt     DateTime  @default(now()) @map("created_at")
+  deletedAt     DateTime? @map("deleted_at")
 
   destination Destination @relation("purchaseTodestination", fields: [destinationId], references: [id])
+  user        User        @relation("orderTouser", fields: [userId], references: [id])
   @@index([destinationId], name: "purchase_destination_fk")
+  @@index([userId], name: "purchase_user_fk")
   @@map("order")
 }

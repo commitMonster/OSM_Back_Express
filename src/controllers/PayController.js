@@ -1,10 +1,11 @@
 import express from 'express';
+import * as AuthHelper from '../middlewares/AuthHelper';
 import * as PayService from '../services/PayService';
 
 const router = express.Router();
 
 // 결제 요청
-router.post('/', PayService.request);
+router.post('/', AuthHelper.isLoggedIn, PayService.request);
 
 // 결제 이후 상황
 router.get('/success', PayService.success);

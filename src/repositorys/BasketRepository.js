@@ -17,6 +17,22 @@ export const findAll = async () => {
   }
 };
 
+export const findAllByUserId = async userId => {
+  try {
+    return prisma.basket.findMany({ where: { userId } });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const findById = async id => {
+  try {
+    return prisma.basket.findUnique({ where: { id } });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const findByUserIdAndProductId = async (userId, productId) => {
   try {
     return prisma.basket.findMany({ where: { userId, productId } });

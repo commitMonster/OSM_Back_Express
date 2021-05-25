@@ -51,7 +51,7 @@ export const findAllByEndDate = async (end, sort) => {
     return prisma.noticeEvent.findMany({
       orderBy: [{ endDate: sort }],
       where: {
-        endDate: { gte: end },
+        endDate: { lte: end },
       },
     });
   } catch (err) {

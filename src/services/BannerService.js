@@ -30,12 +30,12 @@ export const findAll = async (req, res, next) => {
       banners = await BannerRepository.findAllBetween(start, end, sort);
     } else if (req.query.sort === 'now') {
       // 현재 진행 중인 이벤트
-      const end = new Date(new Date().toLocaleDateString() + ' 23:59:59');
-      banners = await BannerRepository.findAllByEndDate(end, sort);
+      const now = new Date(new Date().toLocaleDateString() + ' 23:59:59');
+      banners = await BannerRepository.findAllBetween(now, now, sort);
     } else if (req.query.sort === 'end') {
       // 종료된 이벤트
       const start = new Date(new Date().toLocaleDateString() + ' 00:00:00');
-      banners = await BannerRepository.findAllByStartDate(start, sort);
+      banners = await BannerRepository.findAllByEndDate(start, sort);
     } else {
       // 전체 배너
       banners = await BannerRepository.findAllOrderBy(sort);

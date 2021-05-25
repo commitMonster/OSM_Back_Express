@@ -1,5 +1,6 @@
 import * as BasketRepository from '../repositorys/BasketRepository';
 import * as ProductRepository from '../repositorys/ProductRepository';
+import { deleteBasket } from '../utils/DeleteBasket';
 
 export const create = async (req, res, next) => {
   try {
@@ -26,10 +27,14 @@ export const create = async (req, res, next) => {
         });
       }
       const addCountBasket = await BasketRepository.updateByIdAndCount(curruntBasket[0].id, numberOfProductsWantToBuy);
+      const updateProduct = await ProductRepository.updateCountById(data.productId, product.count - data.count);
+      console.log(updateProduct);
       return res.send(addCountBasket);
     } else {
       data.userId = req.user.id;
       const basket = await BasketRepository.create(data);
+      const updateProduct = await ProductRepository.updateCountById(data.productId, product.count - data.count);
+      console.log(updateProduct);
       return res.send(basket);
     }
   } catch (err) {
@@ -50,15 +55,20 @@ export const findAll = async (req, res, next) => {
 
 export const updateById = async (req, res, next) => {
   try {
-    const product = await ProductRepository.findById(Number(req.params.id));
+    const product = await ProductRepository.findById(req.body.productId);
     if (req.body.count > product.count) {
       return res.send({
         status: false,
         message: '상품의 수량이 부족합니다.',
       });
     }
-    const updateProduct = await BasketRepository.updateByIdAndCount(Number(req.params.id), req.body.count);
-    return res.send(updateProduct);
+    const currentBasket = await BasketRepository.findById(Number(req.params.id));
+    const updateBasket = await BasketRepository.updateByIdAndCount(Number(req.params.id), req.body.count);
+
+    const productCount = product.count + currentBasket.count - updateBasket.count;
+    const updateProduct = await ProductRepository.updateCountById(req.body.productId, productCount);
+    console.log(updateProduct);
+    return res.send(updateBasket);
   } catch (err) {
     console.error(err);
     next(err);
@@ -67,7 +77,7 @@ export const updateById = async (req, res, next) => {
 
 export const deleteById = async (req, res, next) => {
   try {
-    await BasketRepository.deleteById(Number(req.params.id));
+    await deleteBasket(Number(req.params.id));
     return res.send({ message: '삭제 성공' });
   } catch (err) {
     console.error(err);
@@ -77,7 +87,12 @@ export const deleteById = async (req, res, next) => {
 
 export const deleteAll = async (req, res, next) => {
   try {
-    await BasketRepository.deleteMany(req.user.id);
+    const basketList = await BasketRepository.findAllByUserId(req.user.id);
+
+    for await (const basket of basketList) {
+      await deleteBasket(basket.id);
+    }
+
     return res.send({ message: '삭제 성공' });
   } catch (err) {
     console.error(err);
