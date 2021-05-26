@@ -33,19 +33,6 @@ export const findAllBetween = async (start, end, sort) => {
   }
 };
 
-export const findAllByStartDate = async (start, sort) => {
-  try {
-    return prisma.noticeEvent.findMany({
-      orderBy: [{ endDate: sort }],
-      where: {
-        startDate: { lte: start },
-      },
-    });
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 export const findAllByEndDate = async (end, sort) => {
   try {
     return prisma.noticeEvent.findMany({

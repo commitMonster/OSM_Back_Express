@@ -23,7 +23,7 @@ export const updateByByUserIdAndStateIsWait = async userId => {
   try {
     return prisma.order.updateMany({
       where: { userId, state: 'wait' },
-      data: { state: 'approve' },
+      data: { state: 'waitForDelivery' },
     });
   } catch (err) {
     console.error(err);

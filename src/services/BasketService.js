@@ -45,7 +45,7 @@ export const create = async (req, res, next) => {
 
 export const findAll = async (req, res, next) => {
   try {
-    const basketList = await BasketRepository.findAll();
+    const basketList = await BasketRepository.findAllByUserId(req.user.id);
     return res.send(basketList);
   } catch (err) {
     console.error(err);

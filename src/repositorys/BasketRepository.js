@@ -9,14 +9,6 @@ export const create = async data => {
   }
 };
 
-export const findAll = async () => {
-  try {
-    return prisma.basket.findMany({});
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 export const findAllByUserId = async userId => {
   try {
     return prisma.basket.findMany({ where: { userId } });

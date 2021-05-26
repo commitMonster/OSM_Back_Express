@@ -99,6 +99,8 @@ model Review {
   id          Int     @id @default(autoincrement())
   productId   Int     @map("product_id")
   score       Int
+  recommend   String
+  delivery    String
   description String? @mysql.MediumText
   product     Product @relation("productToreview", fields: [productId], references: [id])
 
