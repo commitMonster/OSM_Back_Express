@@ -11,7 +11,12 @@ export const create = async data => {
 
 export const findAllByUserId = async userId => {
   try {
-    return prisma.basket.findMany({ where: { userId } });
+    return prisma.basket.findMany({
+      where: { userId },
+      include: {
+        product: true,
+      },
+    });
   } catch (err) {
     console.error(err);
   }
