@@ -31,7 +31,7 @@ export const findAll = async (req, res, next) => {
     } else if (req.query.sort === 'now') {
       // 현재 진행 중인 이벤트
       const now = new Date(new Date().toLocaleDateString() + ' 23:59:59');
-      banners = await BannerRepository.findAllBetween(now, now, sort);
+      banners = await BannerRepository.findAllBetweenAndActive(now, now, sort);
     } else if (req.query.sort === 'end') {
       // 종료된 이벤트
       const start = new Date(new Date().toLocaleDateString() + ' 00:00:00');

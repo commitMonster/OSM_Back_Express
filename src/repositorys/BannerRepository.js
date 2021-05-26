@@ -33,6 +33,21 @@ export const findAllBetween = async (start, end, sort) => {
   }
 };
 
+export const findAllBetweenAndActive = async (start, end, sort) => {
+  try {
+    return prisma.noticeEvent.findMany({
+      orderBy: [{ endDate: sort }],
+      where: {
+        startDate: { lte: end },
+        endDate: { gte: start },
+        activation: true,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const findAllByEndDate = async (end, sort) => {
   try {
     return prisma.noticeEvent.findMany({
