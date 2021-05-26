@@ -20,7 +20,7 @@ export const create = async (req, res, next) => {
     const curruntBasket = await BasketRepository.findByUserIdAndProductId(req.user.id, data.productId);
     if (curruntBasket.length) {
       const numberOfProductsWantToBuy = data.count + curruntBasket[0].count;
-      if (product.count < numberOfProductsWantToBuy) {
+      if (product.count < data.count) {
         return res.send({
           status: false,
           message: '상품의 수량이 부족합니다.',
