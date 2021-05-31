@@ -11,7 +11,7 @@ export const create = async (req, res, next) => {
         status: false,
         message: '해당 상품은 없습니다.',
       });
-    } else if (data.count > product.count) {
+    } else if (data.count > product.stock) {
       return res.send({
         status: false,
         message: '상품의 수량이 부족합니다.',
@@ -20,20 +20,20 @@ export const create = async (req, res, next) => {
     const curruntBasket = await BasketRepository.findByUserIdAndProductId(req.user.id, data.productId);
     if (curruntBasket.length) {
       const numberOfProductsWantToBuy = data.count + curruntBasket[0].count;
-      if (product.count < data.count) {
+      if (product.stock < data.count) {
         return res.send({
           status: false,
           message: '상품의 수량이 부족합니다.',
         });
       }
       const addCountBasket = await BasketRepository.updateByIdAndCount(curruntBasket[0].id, numberOfProductsWantToBuy);
-      const updateProduct = await ProductRepository.updateCountById(data.productId, product.count - data.count);
+      const updateProduct = await ProductRepository.updateCountById(data.productId, product.stock - data.count);
       console.log(updateProduct);
       return res.send(addCountBasket);
     } else {
       data.userId = req.user.id;
       const basket = await BasketRepository.create(data);
-      const updateProduct = await ProductRepository.updateCountById(data.productId, product.count - data.count);
+      const updateProduct = await ProductRepository.updateCountById(data.productId, product.stock - data.count);
       console.log(updateProduct);
       return res.send(basket);
     }
@@ -56,7 +56,7 @@ export const findAll = async (req, res, next) => {
 export const updateById = async (req, res, next) => {
   try {
     const product = await ProductRepository.findById(req.body.productId);
-    if (req.body.count > product.count) {
+    if (req.body.count > product.stock) {
       return res.send({
         status: false,
         message: '상품의 수량이 부족합니다.',
@@ -65,9 +65,9 @@ export const updateById = async (req, res, next) => {
     const currentBasket = await BasketRepository.findById(Number(req.params.id));
     const updateBasket = await BasketRepository.updateByIdAndCount(Number(req.params.id), req.body.count);
 
-    const productCount = product.count + currentBasket.count - updateBasket.count;
+    const productCount = product.stock + currentBasket.count - updateBasket.count;
+    console.log(productCount);
     const updateProduct = await ProductRepository.updateCountById(req.body.productId, productCount);
-    console.log(updateProduct);
     return res.send(updateBasket);
   } catch (err) {
     console.error(err);

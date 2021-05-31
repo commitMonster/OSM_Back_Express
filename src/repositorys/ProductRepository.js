@@ -15,7 +15,7 @@ export const updateById = async (id, data) => {
 export const updateCountById = async (id, count) => {
   return prisma.product.update({
     where: { id },
-    data: { count },
+    data: { stock: count },
   });
 };
 
@@ -49,16 +49,15 @@ export const findAllByWhereOptionOrderByOrderOption = async (pagination, whereOp
         select: { review: true },
       },
     },
-    orderBy: [orderOption],
+    orderBy: orderOption,
   });
 };
 
-export const countByWhereOptionOrderByOrderOption = async (whereOption, orderOption) => {
+export const countByWhereOptionOrderByOrderOption = async whereOption => {
   return await prisma.product.count({
     where: {
       AND: whereOption,
     },
-    orderBy: [orderOption],
   });
 };
 

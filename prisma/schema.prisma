@@ -34,7 +34,7 @@ model Product {
   categoryId  Int      @map("category_id")
   name        String   @mysql.VarChar(255)
   description String?  @mysql.Text
-  count       Int
+  stock       Int
   price       Int
   delivery    Int
   image       String

@@ -83,7 +83,7 @@ export const findAll = async (req, res, next) => {
 
     const orderOption = {};
     orderOption[orderBy] = sort;
-
+    console.log(orderOption);
     const whereOption = [{ isDeleted }];
     if (categoryId) {
       whereOption.push({ categoryId });
@@ -102,7 +102,7 @@ export const findAll = async (req, res, next) => {
     }
 
     const productList = await ProductRepository.findAllByWhereOptionOrderByOrderOption(pagination, whereOption, orderOption);
-    const itemCount = await ProductRepository.countByWhereOptionOrderByOrderOption(whereOption, orderOption);
+    const itemCount = await ProductRepository.countByWhereOptionOrderByOrderOption(whereOption);
 
     productList.map(product => {
       product.image = product.image.split(',');

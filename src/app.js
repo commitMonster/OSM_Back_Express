@@ -12,7 +12,7 @@ import BannerController from './controllers/BannerController';
 import BasketController from './controllers/BasketController';
 import DestinationController from './controllers/DestinationController';
 import ImageController from './controllers/ImageController';
-import PayController from './controllers/PayController';
+import OrderController from './controllers/OrderController';
 import ProductController from './controllers/ProductController';
 import { errorHandler, logHandler } from './middlewares/ErrorHandler';
 
@@ -36,7 +36,7 @@ app.use('/banner', BannerController);
 app.use('/product', ProductController);
 app.use('/basket', BasketController);
 app.use('/destination', DestinationController);
-app.use('/pay', PayController);
+app.use('/order', OrderController);
 
 app.use(logHandler);
 app.use(errorHandler);
