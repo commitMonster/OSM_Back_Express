@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "@prisma/client": "^2.22.1",
+    "@prisma/client": "^2.24.0",
     "axios": "^0.21.1",
     "babel-jest": "^24.9.0",
     "bcrypt": "^5.0.1",
@@ -69,6 +69,6 @@
     "jest-environment-node": "^24.9.0",
     "nodemon": "^2.0.7",
     "prettier": "^2.0.4",
-    "prisma": "^2.22.1"
+    "prisma": "^2.24.0"
   }
 }

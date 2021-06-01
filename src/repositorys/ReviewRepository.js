@@ -6,3 +6,11 @@ export const findByProductId = async productId => {
     where: { productId },
   });
 };
+
+export const create = async data => {
+  return await prisma.review.create({ data });
+};
+
+export const countAll = async () => {
+  return await prisma.review.count();
+};

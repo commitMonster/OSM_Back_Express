@@ -1,5 +1,4 @@
 import * as ProductRepository from '../repositorys/ProductRepository';
-import * as ReviewRepository from '../repositorys/ReviewRepository';
 
 export const create = async (req, res, next) => {
   try {
@@ -42,6 +41,12 @@ export const findById = async (req, res, next) => {
   try {
     const product = await ProductRepository.findById(Number(req.params.id));
     product.image = product.image.split(',');
+
+    product.review.map(review => {
+      review.userId = String(review.user.userId).substr(0, 3) + '***';
+      review.name = String(review.user.name).substr(0, 1) + '**';
+      delete review.user;
+    });
     return res.send(product);
   } catch (err) {
     console.error(err);
@@ -83,7 +88,7 @@ export const findAll = async (req, res, next) => {
 
     const orderOption = {};
     orderOption[orderBy] = sort;
-
+    console.log(orderOption);
     const whereOption = [{ isDeleted }];
     if (categoryId) {
       whereOption.push({ categoryId });
@@ -102,7 +107,7 @@ export const findAll = async (req, res, next) => {
     }
 
     const productList = await ProductRepository.findAllByWhereOptionOrderByOrderOption(pagination, whereOption, orderOption);
-    const itemCount = await ProductRepository.countByWhereOptionOrderByOrderOption(whereOption, orderOption);
+    const itemCount = await ProductRepository.countByWhereOptionOrderByOrderOption(whereOption);
 
     productList.map(product => {
       product.image = product.image.split(',');
@@ -122,16 +127,6 @@ export const findNew = async (req, res, next) => {
       product.image = product.image.split(',');
     });
     return res.send(newProductList);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-};
-
-export const findReview = async (req, res, next) => {
-  try {
-    const reviewList = await ReviewRepository.findByProductId(Number(req.params.id));
-    return res.send(reviewList);
   } catch (err) {
     console.error(err);
     next(err);

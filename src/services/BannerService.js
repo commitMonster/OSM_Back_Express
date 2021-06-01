@@ -20,21 +20,21 @@ export const create = async (req, res, next) => {
 };
 
 export const findAll = async (req, res, next) => {
-  const sort = req.query.orderBy || 'asc';
+  const sort = req.query.sort || 'asc';
   try {
     let banners;
     if (req.query.start && req.query.end) {
       // 선택한 날짜에 진행 중인 이벤트
-      const start = new Date(req.query.start + ' 00:00:00');
-      const end = new Date(req.query.end + ' 23:59:59');
+      const start = new Date(req.query.start);
+      const end = new Date(req.query.end);
       banners = await BannerRepository.findAllBetween(start, end, sort);
     } else if (req.query.sort === 'now') {
       // 현재 진행 중인 이벤트
-      const now = new Date(new Date().toLocaleDateString() + ' 23:59:59');
+      const now = new Date();
       banners = await BannerRepository.findAllBetweenAndActive(now, now, sort);
     } else if (req.query.sort === 'end') {
       // 종료된 이벤트
-      const start = new Date(new Date().toLocaleDateString() + ' 00:00:00');
+      const start = new Date();
       banners = await BannerRepository.findAllByEndDate(start, sort);
     } else {
       // 전체 배너

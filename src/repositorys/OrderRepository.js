@@ -9,21 +9,53 @@ export const create = async data => {
   }
 };
 
-export const findAllByUserIdAndStateIsWait = async userId => {
+export const deleteById = async id => {
+  try {
+    return prisma.order.delete({ where: { id } });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const findById = async id => {
+  try {
+    return prisma.order.findUnique({ where: { id } });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const findAllByWhereOptionAndPagination = async (whereOption, pagination) => {
   try {
     return prisma.order.findMany({
-      where: { userId, state: 'wait' },
+      where: {
+        AND: whereOption,
+      },
+      skip: pagination.skip,
+      take: pagination.take,
     });
   } catch (err) {
     console.error(err);
   }
 };
 
-export const updateByByUserIdAndStateIsWait = async userId => {
+export const updateStateeById = async (id, state) => {
   try {
-    return prisma.order.updateMany({
-      where: { userId, state: 'wait' },
-      data: { state: 'waitForDelivery' },
+    return prisma.order.update({
+      where: { id },
+      data: { state },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const countAllByWhereOption = async whereOption => {
+  try {
+    return prisma.order.count({
+      where: {
+        AND: whereOption,
+      },
     });
   } catch (err) {
     console.error(err);
