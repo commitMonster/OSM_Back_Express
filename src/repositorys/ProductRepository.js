@@ -19,6 +19,13 @@ export const updateCountById = async (id, count) => {
   });
 };
 
+export const updateScoreById = async (id, score) => {
+  return prisma.product.update({
+    where: { id },
+    data: { score },
+  });
+};
+
 export const deleteById = async id => {
   return await prisma.product.update({
     where: { id },
@@ -30,8 +37,8 @@ export const findById = async id => {
   return await prisma.product.findUnique({
     where: { id },
     include: {
-      _count: {
-        select: { review: true },
+      review: {
+        include: { user: true },
       },
     },
   });

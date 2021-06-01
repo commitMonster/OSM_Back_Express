@@ -20,7 +20,7 @@ export const create = async (req, res, next) => {
 };
 
 export const findAll = async (req, res, next) => {
-  const sort = req.query.orderBy || 'asc';
+  const sort = req.query.sort || 'asc';
   try {
     let banners;
     if (req.query.start && req.query.end) {

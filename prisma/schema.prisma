@@ -39,7 +39,7 @@ model Product {
   delivery    Int
   image       String
   isDeleted   Boolean  @map("is_deleted")
-  score       Int      @default(0)
+  score       Float    @default(0)
   category    Category @relation("categoryToproduct", fields: [categoryId], references: [id])
   createdAt   DateTime @default(now()) @map("created_at")
   review      Review[] @relation("productToreview")
@@ -61,6 +61,7 @@ model User {
 
   Destination Destination[] @relation("destinationTouser")
   Order       Order[]       @relation("orderTouser")
+  Review      Review[]      @relation("userToreview")
   @@map("user")
 }
 
@@ -89,7 +90,6 @@ model Destination {
   isDefault       Boolean @map("is_default")
   user            User    @relation("destinationTouser", fields: [userId], references: [id])
 
-  Order Order[] @relation("purchaseTodestination")
   @@index([userId], name: "destination_user_fk")
   @@map("destination")
 }
@@ -98,13 +98,16 @@ model Destination {
 model Review {
   id          Int     @id @default(autoincrement())
   productId   Int     @map("product_id")
-  score       Int
+  userId      Int     @map("user_id")
+  score       Float
   recommend   String
   delivery    String
   description String? @mysql.MediumText
   product     Product @relation("productToreview", fields: [productId], references: [id])
+  user        User    @relation("userToreview", fields: [userId], references: [id])
 
   @@index([productId], name: "review_product_fk")
+  @@index([userId], name: "review_user_fk")
   @@map("review")
 }
 
@@ -119,9 +122,8 @@ model Order {
   creaetdAt     DateTime  @default(now()) @map("created_at")
   deletedAt     DateTime? @map("deleted_at")
 
-  destination Destination @relation("purchaseTodestination", fields: [destinationId], references: [id])
-  user        User        @relation("orderTouser", fields: [userId], references: [id])
-  @@index([destinationId], name: "purchase_destination_fk")
+  user User @relation("orderTouser", fields: [userId], references: [id])
+
   @@index([userId], name: "purchase_user_fk")
   @@map("order")
 }
