@@ -32,10 +32,10 @@ export const findAll = async (req, res, next) => {
       // 현재 진행 중인 이벤트
       const now = new Date();
       banners = await BannerRepository.findAllBetweenAndActive(now, now, sort);
-    } else if (req.query.tpye === 'end') {
+    } else if (req.query.type === 'end') {
       // 종료된 이벤트
-      const start = new Date();
-      banners = await BannerRepository.findAllByEndDate(start, sort);
+      const now = new Date();
+      banners = await BannerRepository.findAllByEndDate(now, sort);
     } else {
       // 전체 배너
       banners = await BannerRepository.findAllOrderBy(sort);
