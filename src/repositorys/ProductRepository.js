@@ -70,6 +70,7 @@ export const countByWhereOptionOrderByOrderOption = async whereOption => {
 
 export const findOrderByCreatedAtLimitFive = async () => {
   return await prisma.product.findMany({
+    where: { isDeleted: false },
     orderBy: { createdAt: 'desc' },
     take: 5,
   });

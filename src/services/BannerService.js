@@ -28,11 +28,11 @@ export const findAll = async (req, res, next) => {
       const start = new Date(req.query.start);
       const end = new Date(req.query.end);
       banners = await BannerRepository.findAllBetween(start, end, sort);
-    } else if (req.query.sort === 'now') {
+    } else if (req.query.type === 'now') {
       // 현재 진행 중인 이벤트
       const now = new Date();
       banners = await BannerRepository.findAllBetweenAndActive(now, now, sort);
-    } else if (req.query.sort === 'end') {
+    } else if (req.query.tpye === 'end') {
       // 종료된 이벤트
       const start = new Date();
       banners = await BannerRepository.findAllByEndDate(start, sort);
