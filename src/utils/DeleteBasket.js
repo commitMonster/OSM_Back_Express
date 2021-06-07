@@ -6,7 +6,7 @@ export const deleteBasket = async basketId => {
     const currentBasket = await BasketRepository.findById(basketId);
     const currentProduct = await ProductRepository.findById(currentBasket.productId);
 
-    const productCount = currentBasket.count + currentProduct.count;
+    const productCount = currentBasket.count + currentProduct.stock;
     const updateProduct = await ProductRepository.updateCountById(currentProduct.id, productCount);
     console.log(updateProduct);
 

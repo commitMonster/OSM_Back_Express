@@ -84,6 +84,7 @@ model Destination {
   userId          Int     @map("user_id")
   destinationName String
   receiver        String
+  phone           String
   mainAddress     String  @map("main_address")
   detailAddress   String  @map("detail_address")
   zoneNumber      String  @map("zone_number")
