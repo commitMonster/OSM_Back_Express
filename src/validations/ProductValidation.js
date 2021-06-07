@@ -10,7 +10,7 @@ export const productRequest = async (req, res, next) => {
     await check('delivery').isNumeric().run(req);
     await check('categoryId').isNumeric().run(req);
 
-    req.body.count = Number(req.body.count);
+    req.body.stock = Number(req.body.stock);
     req.body.price = Number(req.body.price);
 
     const error = validationResult(req);
