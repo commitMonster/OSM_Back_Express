@@ -132,3 +132,16 @@ export const findNew = async (req, res, next) => {
     next(err);
   }
 };
+
+export const findPopular = async (req, res, next) => {
+  try {
+    const newProductList = await ProductRepository.findOrderByScoreLimitFive();
+    newProductList.map(product => {
+      product.image = product.image.split(',');
+    });
+    return res.send(newProductList);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};

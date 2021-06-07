@@ -75,3 +75,11 @@ export const findOrderByCreatedAtLimitFive = async () => {
     take: 5,
   });
 };
+
+export const findOrderByScoreLimitFive = async () => {
+  return await prisma.product.findMany({
+    where: { isDeleted: false },
+    orderBy: { score: 'desc' },
+    take: 5,
+  });
+};
