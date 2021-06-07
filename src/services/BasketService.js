@@ -46,6 +46,9 @@ export const create = async (req, res, next) => {
 export const findAll = async (req, res, next) => {
   try {
     const basketList = await BasketRepository.findAllByUserId(req.user.id);
+    basketList.map(basket => {
+      basket.product.image = basket.product.image.split(',');
+    });
     return res.send(basketList);
   } catch (err) {
     console.error(err);
@@ -67,7 +70,7 @@ export const updateById = async (req, res, next) => {
 
     const productCount = product.stock + currentBasket.count - updateBasket.count;
     console.log(productCount);
-    const updateProduct = await ProductRepository.updateCountById(req.body.productId, productCount);
+    await ProductRepository.updateCountById(req.body.productId, productCount);
     return res.send(updateBasket);
   } catch (err) {
     console.error(err);
