@@ -65,6 +65,9 @@ export const findList = async (req, res, next) => {
       orderList[i].list = orderList[i].list.split(',').map(v => Number(v));
       const basketProduct = await BasketProductRepository.findAllByOrderList(orderList[i].list);
       orderList[i].basket = basketProduct;
+      orderList[i].basket.map(v => {
+        v.product.image = v.product.image.split(',');
+      });
     }
 
     return res.send({ orderList, orderCount });

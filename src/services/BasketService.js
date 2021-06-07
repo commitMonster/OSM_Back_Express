@@ -43,6 +43,33 @@ export const create = async (req, res, next) => {
   }
 };
 
+export const once = async (req, res, next) => {
+  try {
+    const data = req.body;
+    const product = await ProductRepository.findById(data.productId);
+    if (product === null || product.isDeleted) {
+      return res.send({
+        status: false,
+        message: '해당 상품은 없습니다.',
+      });
+    } else if (data.count > product.stock) {
+      return res.send({
+        status: false,
+        message: '상품의 수량이 부족합니다.',
+      });
+    }
+
+    data.userId = req.user.id;
+    const basket = await BasketRepository.create(data);
+    const updateProduct = await ProductRepository.updateCountById(data.productId, product.stock - data.count);
+    console.log(updateProduct);
+    return res.send(basket);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
 export const findAll = async (req, res, next) => {
   try {
     const basketList = await BasketRepository.findAllByUserId(req.user.id);
