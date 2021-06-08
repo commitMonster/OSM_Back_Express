@@ -49,6 +49,14 @@ export const findList = async (req, res, next) => {
     const endDate = req.query.end ? new Date(req.query.end) : new Date();
     const startDate = req.query.start ? new Date(req.query.start) : new Date(new Date().setMonth(new Date().getMonth() - 1));
 
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
+
     console.log(startDate, endDate);
     const pagination = { skip: pageSize * (page - 1), take: pageSize };
     const whereOption = [{ creaetdAt: { gte: startDate } }, { creaetdAt: { lte: endDate } }];

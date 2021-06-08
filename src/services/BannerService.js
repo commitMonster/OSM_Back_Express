@@ -27,6 +27,14 @@ export const findAll = async (req, res, next) => {
       // 선택한 날짜에 진행 중인 이벤트
       const start = new Date(req.query.start);
       const end = new Date(req.query.end);
+      start.setHours(0);
+      start.setMinutes(0);
+      start.setSeconds(0);
+
+      end.setHours(23);
+      end.setMinutes(59);
+      end.setSeconds(59);
+
       banners = await BannerRepository.findAllBetween(start, end, sort);
     } else if (req.query.type === 'now') {
       // 현재 진행 중인 이벤트
