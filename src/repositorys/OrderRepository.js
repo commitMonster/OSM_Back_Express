@@ -36,6 +36,9 @@ export const findAllByWhereOptionAndPagination = async (whereOption, pagination)
           select: { Destination: true },
         },
       },
+      orderBy: {
+        creaetdAt: 'desc',
+      },
       skip: pagination.skip,
       take: pagination.take,
     });
