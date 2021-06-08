@@ -15,7 +15,7 @@ export const create = async (req, res, next) => {
 
 export const findAll = async (req, res, next) => {
   try {
-    const destinationList = await DestinationRepository.findAll();
+    const destinationList = await DestinationRepository.findAllByUserId(req.user.id);
     return res.send(destinationList);
   } catch (err) {
     console.error(err);

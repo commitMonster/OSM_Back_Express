@@ -5,8 +5,9 @@ export const create = async data => {
   return prisma.destination.create({ data });
 };
 
-export const findAll = async () => {
+export const findAllByUserId = async userId => {
   return prisma.destination.findMany({
+    where: { userId },
     orderBy: [{ isDefault: 'desc' }],
   });
 };

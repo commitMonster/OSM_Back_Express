@@ -30,7 +30,7 @@ export const cancel = async (req, res, next) => {
   try {
     const id = req.body.id;
     const currentOrder = await OrderRepository.findById(id);
-    const updateBasket = await BasketRepository.updateIsDeletedManyInOrder(
+    await BasketRepository.updateIsDeletedManyInOrder(
       req.user.id,
       currentOrder.list.split(',').map(v => Number(v))
     );
@@ -68,6 +68,9 @@ export const findList = async (req, res, next) => {
       orderList[i].basket.map(v => {
         v.product.image = v.product.image.split(',');
       });
+      orderList[i].destination = orderList[i].user.Destination.filter(v => orderList[i].destinationId === v.id)[0];
+
+      delete orderList[i].user;
     }
 
     return res.send({ orderList, orderCount });

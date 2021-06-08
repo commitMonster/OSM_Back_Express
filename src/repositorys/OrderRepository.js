@@ -31,6 +31,11 @@ export const findAllByWhereOptionAndPagination = async (whereOption, pagination)
       where: {
         AND: whereOption,
       },
+      include: {
+        user: {
+          select: { Destination: true },
+        },
+      },
       skip: pagination.skip,
       take: pagination.take,
     });
